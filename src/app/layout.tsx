@@ -20,8 +20,10 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <Header />
-
-        {children}</body>
+        <main className='mt-20'>
+          {children}
+        </main>
+      </body>
     </html>
   );
 }
