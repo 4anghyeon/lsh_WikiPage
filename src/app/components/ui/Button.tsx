@@ -32,7 +32,11 @@ export interface ButtonProps
 }
 
 const Button = ({ className, variant, ...props }: ButtonProps) => {
-  return <button className={cn(buttonVariants({ variant, className }))}>{props.children}</button>;
+  return (
+    <button className={cn(buttonVariants({ variant, className }))} onClick={props.onClick}>
+      {props.children}
+    </button>
+  );
 };
 
 export default Button;
