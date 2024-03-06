@@ -6,10 +6,24 @@ export const findAllWikiList = async () => {
   return data as Wiki[];
 };
 
-export const useWikiFetchQuery = () => {
+export const findWikiById = async (id: string) => {
+  const { data } = await wikiApi.get(`/wikiList/${id}`);
+  return data as Wiki | null;
+};
+
+export const useFindAllWikiQuery = () => {
   const { data } = useQuery<Wiki[]>({
     queryKey: ['wiki'],
     queryFn: async () => findAllWikiList(),
+  });
+
+  return data;
+};
+
+export const useFindWikiByIdQuery = (id: string) => {
+  const { data } = useQuery<Wiki | null>({
+    queryKey: ['wiki', id],
+    queryFn: async () => findWikiById(id),
   });
 
   return data;
