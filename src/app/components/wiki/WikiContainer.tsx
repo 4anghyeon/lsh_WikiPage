@@ -25,6 +25,7 @@ const WikiContainer = ({ data, initPageNum }: WikiContainerProps) => {
 
   return (
     <WikiWrapper>
+      <WikiWrapper.WikiListHeader />
       {wikiList.length > 0 ? (
         <>
           <div className="flex flex-col gap-5">
