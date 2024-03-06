@@ -11,7 +11,6 @@ export default async function Home(props: Readonly<Props>) {
   const page = props.searchParams.page?.toString() ?? 1;
   const data = await findAllWikiList();
 
-  console.log(data);
   return (
     <Suspense fallback={<Loading />}>
       <WikiListContainer data={data} initPageNum={+page} />

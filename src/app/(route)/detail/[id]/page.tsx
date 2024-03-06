@@ -1,7 +1,8 @@
 import React from 'react';
+import WikiDetailContainer from '@/app/components/wiki/detail/WikiDetailContainer';
 
 const Page = () => {
-  return <div>wiki detail</div>;
+  return <WikiDetailContainer />;
 };
 
 export default Page;
