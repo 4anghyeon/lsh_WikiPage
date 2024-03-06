@@ -15,7 +15,7 @@ const cropPage = (data: Wiki[], pageNum: number) => {
 };
 
 const WikiContainer = ({ data, initPageNum }: WikiContainerProps) => {
-  const maxPage = useRef(data.length);
+  const totalSize = useRef(data.length);
   const [pageNum, setPageNum] = useState(initPageNum);
   const [wikiList, setWikiList] = useState<Wiki[]>(cropPage(data, initPageNum));
 
@@ -25,8 +25,18 @@ const WikiContainer = ({ data, initPageNum }: WikiContainerProps) => {
 
   return (
     <WikiWrapper>
-      <div className="flex flex-col gap-5">{wikiList?.map(data => <WikiWrapper.Row key={data.id} data={data} />)}</div>
-      <WikiWrapper.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} maxPage={maxPage.current} />
+      {wikiList.length > 0 ? (
+        <>
+          <div className="flex flex-col gap-5">
+            {wikiList.map(data => (
+              <WikiWrapper.Row key={data.id} data={data} />
+            ))}
+          </div>
+          <WikiWrapper.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} totalSize={totalSize.current} />
+        </>
+      ) : (
+        <div>No data</div>
+      )}
     </WikiWrapper>
   );
 };
