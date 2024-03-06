@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import WikiWrapper from '@/app/components/wiki/WikiWrapper';
+import WikiListWrapper from '@/app/components/wiki/list/WikiListWrapper';
 
 interface WikiContainerProps {
   data: Wiki[];
@@ -14,7 +14,7 @@ const cropPage = (data: Wiki[], pageNum: number) => {
   return data.slice((pageNum - 1) * ITEM_PER_PAGE, (pageNum - 1) * ITEM_PER_PAGE + ITEM_PER_PAGE);
 };
 
-const WikiContainer = ({ data, initPageNum }: WikiContainerProps) => {
+const WikiListContainer = ({ data, initPageNum }: WikiContainerProps) => {
   const totalSize = useRef(data.length);
   const [pageNum, setPageNum] = useState(initPageNum);
   const [wikiList, setWikiList] = useState<Wiki[]>(cropPage(data, initPageNum));
@@ -24,22 +24,26 @@ const WikiContainer = ({ data, initPageNum }: WikiContainerProps) => {
   }, [pageNum]);
 
   return (
-    <WikiWrapper>
-      <WikiWrapper.WikiListHeader />
+    <WikiListWrapper>
+      <WikiListWrapper.WikiListHeader />
       {wikiList.length > 0 ? (
         <>
           <div className="flex flex-col gap-5">
             {wikiList.map(data => (
-              <WikiWrapper.Row key={data.id} data={data} />
+              <WikiListWrapper.Row key={data.id} data={data} />
             ))}
           </div>
-          <WikiWrapper.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} totalSize={totalSize.current} />
+          <WikiListWrapper.PageButtonContainer
+            pageNum={pageNum}
+            setPageNum={setPageNum}
+            totalSize={totalSize.current}
+          />
         </>
       ) : (
         <div>No data</div>
       )}
-    </WikiWrapper>
+    </WikiListWrapper>
   );
 };
 
-export default WikiContainer;
+export default WikiListContainer;

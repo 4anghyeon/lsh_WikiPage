@@ -3,7 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 
-const WikiRow = ({ data }: { data: Wiki }) => {
+const WikiListRow = ({ data }: { data: Wiki }) => {
   const router = useRouter();
 
   return (
@@ -16,4 +16,4 @@ const WikiRow = ({ data }: { data: Wiki }) => {
   );
 };
 
-export default WikiRow;
+export default WikiListRow;

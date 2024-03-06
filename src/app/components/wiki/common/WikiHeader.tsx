@@ -1,6 +1,6 @@
 import React from 'react';
 
-const WikiListHeader = () => {
+const WikiHeader = () => {
   return (
     <div className="flex items-center justify-center w-full h-24 p-6 border-b bg-slate-50 border-slate-200">
       <div className="flex items-center justify-start w-full ml-40 gap-2">
@@ -10,4 +10,4 @@ const WikiListHeader = () => {
   );
 };
 
-export default WikiListHeader;
+export default WikiHeader;

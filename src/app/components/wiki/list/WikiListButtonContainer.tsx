@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@/app/components/ui/Button';
-import { ITEM_PER_PAGE } from '@/app/components/wiki/WikiContainer';
+import { ITEM_PER_PAGE } from '@/app/components/wiki/list/WikiListContainer';
 import { usePathname, useSearchParams } from 'next/navigation';
 
 interface PageContainerProps {
@@ -13,7 +13,7 @@ interface PageContainerProps {
 
 const VISIBLE_PAGE_LENGTH = 3;
 
-const WikiPageButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContainerProps) => {
+const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContainerProps) => {
   const pathname = usePathname();
   const pageParams = useSearchParams();
   const page = pageParams.get('page');
@@ -82,4 +82,4 @@ const WikiPageButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
   );
 };
 
-export default WikiPageButtonContainer;
+export default WikiListButtonContainer;

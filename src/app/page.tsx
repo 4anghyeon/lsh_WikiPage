@@ -1,4 +1,4 @@
-import WikiContainer from '@/app/components/wiki/WikiContainer';
+import WikiListContainer from '@/app/components/wiki/list/WikiListContainer';
 import { findAllWikiList } from '@/app/hooks/query/wiki/useWikiFetchQuery';
 import { Suspense } from 'react';
 import Loading from '@/app/loading';
@@ -14,7 +14,7 @@ export default async function Home(props: Readonly<Props>) {
   console.log(data);
   return (
     <Suspense fallback={<Loading />}>
-      <WikiContainer data={data} initPageNum={+page} />
+      <WikiListContainer data={data} initPageNum={+page} />
     </Suspense>
   );
 }
