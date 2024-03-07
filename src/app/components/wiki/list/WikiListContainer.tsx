@@ -2,9 +2,10 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import WikiList from '@/app/components/wiki/list/WikiList';
+import useWikiState, { setWikiList } from '@/app/store/wiki';
 
 interface WikiContainerProps {
-  data: WikiType[];
+  initData: WikiType[];
   initPageNum: number;
 }
 
@@ -14,14 +15,17 @@ const cropPage = (data: WikiType[], pageNum: number) => {
   return data.slice((pageNum - 1) * ITEM_PER_PAGE, (pageNum - 1) * ITEM_PER_PAGE + ITEM_PER_PAGE);
 };
 
-const WikiListContainer = ({ data, initPageNum }: WikiContainerProps) => {
-  const totalSize = useRef(data.length);
+const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
+  const totalSize = useRef(initData.length);
   const [pageNum, setPageNum] = useState(initPageNum);
-  const [wikiList, setWikiList] = useState<WikiType[]>(cropPage(data, initPageNum));
+  const wikiList = useWikiState(state => {
+    if (state.wikiList.length === 0) return cropPage(initData, initPageNum);
+    return cropPage(state.wikiList, pageNum);
+  });
 
   useEffect(() => {
-    setWikiList(cropPage(data, pageNum));
-  }, [pageNum]);
+    setWikiList(initData);
+  }, []);
 
   return (
     <WikiList>

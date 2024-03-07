@@ -13,7 +13,7 @@ export default async function Home(props: Readonly<Props>) {
 
   return (
     <Suspense fallback={<Loading />}>
-      <WikiListContainer data={data} initPageNum={+page} />
+      <WikiListContainer initData={data} initPageNum={+page} />
     </Suspense>
   );
 }
