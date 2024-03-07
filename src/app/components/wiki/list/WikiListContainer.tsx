@@ -35,7 +35,7 @@ const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
               <WikiList.Row key={data.id} data={data} />
             ))}
           </div>
-          <WikiList.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} totalSize={totalSize} />
+          <WikiList.PageButtonContainer setPageNum={setPageNum} totalSize={totalSize} />
         </>
       ) : (
         <div>No data</div>

@@ -1,13 +1,13 @@
 import React from 'react';
-import WikiDetailWrapper from '@/app/components/wiki/detail/WikiDetailWrapper';
+import WikiDetail from '@/app/components/wiki/detail/WikiDetail';
 
 const WikiDetailContainer = ({ data }: { data: WikiType | null }) => {
   return (
-    <WikiDetailWrapper>
-      <WikiDetailWrapper.Header title={data?.title ?? ''} />
-      <WikiDetailWrapper.TabHeader />
-      <WikiDetailWrapper.Description description={data?.content ?? ''} />
-    </WikiDetailWrapper>
+    <WikiDetail>
+      <WikiDetail.Header title={data?.title ?? ''} />
+      <WikiDetail.TabHeader />
+      <WikiDetail.Description description={data?.content ?? ''} />
+    </WikiDetail>
   );
 };
 
