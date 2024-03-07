@@ -1,6 +1,11 @@
 interface Wiki {
   id: string;
-  index: number;
   title: string;
   content: string;
+}
+
+interface TextValidationType {
+  name: string;
+  text: string;
+  maxLength: number;
 }
