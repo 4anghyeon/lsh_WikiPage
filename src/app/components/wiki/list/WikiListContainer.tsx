@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import WikiList from '@/app/components/wiki/list/WikiList';
 import useWikiState, { setWikiList } from '@/app/store/wiki';
+import { useFindAllWikiQuery } from '@/app/hooks/query/wiki/useFetchWiki';
 
 interface WikiContainerProps {
   initData: WikiType[];
@@ -16,28 +17,25 @@ const cropPage = (data: WikiType[], pageNum: number) => {
 };
 
 const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
-  const totalSize = useRef(initData.length);
   const [pageNum, setPageNum] = useState(initPageNum);
-  const wikiList = useWikiState(state => {
-    if (state.wikiList.length === 0) return cropPage(initData, initPageNum);
-    return cropPage(state.wikiList, pageNum);
-  });
+  const wikiList = useFindAllWikiQuery();
+  const [totalSize, setTotalSize] = useState(initData.length);
 
   useEffect(() => {
-    setWikiList(initData);
-  }, []);
+    setTotalSize((wikiList ?? initData).length);
+  }, [wikiList]);
 
   return (
     <WikiList>
       <WikiList.Header title={'코딩허브 위키'} />
-      {wikiList.length > 0 ? (
+      {initData.length > 0 ? (
         <>
           <div className="flex flex-col gap-5 ml-40 mr-40">
-            {wikiList.map(data => (
+            {cropPage(wikiList ? wikiList : initData, pageNum).map(data => (
               <WikiList.Row key={data.id} data={data} />
             ))}
           </div>
-          <WikiList.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} totalSize={totalSize.current} />
+          <WikiList.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} totalSize={totalSize} />
         </>
       ) : (
         <div>No data</div>

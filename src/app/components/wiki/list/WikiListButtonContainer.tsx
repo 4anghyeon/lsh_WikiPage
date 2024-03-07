@@ -61,12 +61,12 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
     const temp: number[] = [];
     for (let i = 1; i <= VISIBLE_PAGE_LENGTH; i++) {
       temp.push(startPage + i);
-      if ((startPage + i) * ITEM_PER_PAGE > totalSize) break;
+      if ((startPage + i) * ITEM_PER_PAGE >= totalSize) break;
     }
 
     // page1,2,3 => [1, 2, 3], page4,5,6 => [4, 5, 6] ....
     setPageArray(temp);
-  }, [pageNum]);
+  }, [pageNum, totalSize]);
 
   return (
     <div className="flex justify-center ml-40 mr-40 relative">
