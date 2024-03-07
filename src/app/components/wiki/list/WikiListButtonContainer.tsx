@@ -62,7 +62,7 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
   }, [pageNum]);
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center ml-40 mr-40 relative">
       {pageNum > VISIBLE_PAGE_LENGTH && (
         <Button variant="outline" className="mr-2" onClick={handleClickPrev}>
           이전
@@ -78,6 +78,9 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
           다음
         </Button>
       )}
+      <Button variant="primary" className="absolute right-0">
+        등록
+      </Button>
     </div>
   );
 };
