@@ -5,6 +5,7 @@ const WikiDetailContainer = ({ data }: { data: Wiki | null }) => {
   return (
     <WikiDetailWrapper>
       <WikiDetailWrapper.Header title={data?.title ?? ''} />
+      <WikiDetailWrapper.TabHeader />
     </WikiDetailWrapper>
   );
 };
