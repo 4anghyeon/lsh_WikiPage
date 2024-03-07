@@ -1,5 +1,5 @@
 import WikiListContainer from '@/app/components/wiki/list/WikiListContainer';
-import { findAllWikiList } from '@/app/hooks/query/wiki/useWikiFetchQuery';
+import { findAllWikiList } from '@/app/hooks/query/wiki/useFetchWiki';
 import { Suspense } from 'react';
 import Loading from '@/app/loading';
 
