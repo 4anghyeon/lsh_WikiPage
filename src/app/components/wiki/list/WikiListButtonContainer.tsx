@@ -4,6 +4,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@/app/components/ui/Button';
 import { ITEM_PER_PAGE } from '@/app/components/wiki/list/WikiListContainer';
 import { usePathname, useSearchParams } from 'next/navigation';
+import WriteContent from '@/app/components/wiki/modal/WriteContent';
+import { useModal } from '@/app/hooks/ui/useModal';
 
 interface PageContainerProps {
   pageNum: number;
@@ -18,6 +20,7 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
   const pageParams = useSearchParams();
   const page = pageParams.get('page');
   const [pageArray, setPageArray] = useState<number[]>([]);
+  const { showModal } = useModal();
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -45,6 +48,10 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
     setPageNum(page);
     history.replaceState(null, '', pathname + '?' + createQueryString('page', page.toString()));
   }, []);
+
+  const handleClickEnroll = () => {
+    showModal(<WriteContent />);
+  };
 
   // 화면에 보여질 페이지 번호를 계산한다.
   useEffect(() => {
@@ -78,7 +85,7 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
           다음
         </Button>
       )}
-      <Button variant="primary" className="absolute right-0">
+      <Button variant="primary" className="absolute right-0" onClick={handleClickEnroll}>
         등록
       </Button>
     </div>

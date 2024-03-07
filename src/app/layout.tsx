@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/app/components/layout/Header';
 import { ReactNode } from 'react';
 import Provider from '@/app/shared/provider';
+import Modal from '@/app/components/ui/modal/Modal';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
         <Header />
         <Provider>
           <main className="pt-20">{children}</main>
+          <Modal />
         </Provider>
       </body>
     </html>
