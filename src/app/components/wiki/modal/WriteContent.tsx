@@ -1,42 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import Input from '@/app/components/ui/Input';
 import Textarea from '@/app/components/ui/Textarea';
 import Button from '@/app/components/ui/Button';
-import { setModalContent } from '@/app/store/modal';
-import { useInsertWiki } from '@/app/hooks/query/wiki/useSetWiki';
-import { validationText } from '@/app/lib/utils';
 import Spinner from '@/app/components/ui/Spinner';
 import { clsx } from 'clsx';
+import { useWriteContent } from '@/app/hooks/service/useWriteContent';
 
-const MAX_TITLE_LENGTH = 20;
-const MAX_CONTENT_LENGTH = 300;
+export const MAX_TITLE_LENGTH = 20;
+export const MAX_CONTENT_LENGTH = 300;
 
 const WriteContent = () => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
-  const { addWiki, isAddSuccess, isAddPending } = useInsertWiki();
-
-  const handleClickCancel = () => {
-    setModalContent(null);
-  };
-
-  const handleClickEnroll = () => {
-    if (isAddPending) return;
-    if (!validationText({ name: '강의명', text: titleRef.current!.value, maxLength: MAX_TITLE_LENGTH })) return;
-    if (!validationText({ name: '강의 설명', text: contentRef.current!.value, maxLength: MAX_CONTENT_LENGTH })) return;
-
-    addWiki({
-      title: titleRef.current!.value,
-      content: contentRef.current!.value,
-    });
-  };
-
-  useEffect(() => {
-    if (isAddSuccess) {
-      setModalContent(null);
-      alert('등록 되었습니다!');
-    }
-  }, [isAddSuccess]);
+  const { handleClickEnroll, handleClickCancel, isAddPending } = useWriteContent({ titleRef, contentRef });
 
   return (
     <>

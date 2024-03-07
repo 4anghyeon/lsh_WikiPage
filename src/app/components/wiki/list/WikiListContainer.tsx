@@ -19,6 +19,7 @@ const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
   const [pageNum, setPageNum] = useState(initPageNum);
   const wikiList = useFindAllWikiQuery();
   const [totalSize, setTotalSize] = useState(initData.length);
+  const showingList = cropPage(wikiList || initData, pageNum);
 
   useEffect(() => {
     setTotalSize((wikiList ?? initData).length);
@@ -27,10 +28,10 @@ const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
   return (
     <WikiList>
       <WikiList.Header title={'코딩허브 위키'} />
-      {initData.length > 0 ? (
+      {showingList.length > 0 ? (
         <>
           <div className="flex flex-col gap-5 ml-40 mr-40">
-            {cropPage(wikiList ? wikiList : initData, pageNum).map(data => (
+            {showingList.map(data => (
               <WikiList.Row key={data.id} data={data} />
             ))}
           </div>
