@@ -6,6 +6,7 @@ const WikiDetailContainer = ({ data }: { data: Wiki | null }) => {
     <WikiDetailWrapper>
       <WikiDetailWrapper.Header title={data?.title ?? ''} />
       <WikiDetailWrapper.TabHeader />
+      <WikiDetailWrapper.Description description={data?.content ?? ''} />
     </WikiDetailWrapper>
   );
 };
