@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import WikiList from '@/app/components/wiki/list/WikiList';
-import useWikiState, { setWikiList } from '@/app/store/wiki';
 import { useFindAllWikiQuery } from '@/app/hooks/query/wiki/useFetchWiki';
 
 interface WikiContainerProps {
