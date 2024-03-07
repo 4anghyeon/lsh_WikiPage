@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { wikiApi } from '@/app/shared/axios';
 
-export const insertWiki = async (data: Omit<Wiki, 'id'>) => {
+export const insertWiki = async (data: Omit<WikiType, 'id'>) => {
   await wikiApi.post(`/wikiList/`, data);
 };
 

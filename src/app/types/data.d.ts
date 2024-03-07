@@ -1,4 +1,4 @@
-interface Wiki {
+interface WikiType {
   id: string;
   title: string;
   content: string;

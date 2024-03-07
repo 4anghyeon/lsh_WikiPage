@@ -3,16 +3,16 @@ import { wikiApi } from '@/app/shared/axios';
 
 export const findAllWikiList = async () => {
   const { data } = await wikiApi.get(`/wikiList`);
-  return data as Wiki[];
+  return data as WikiType[];
 };
 
 export const findWikiById = async (id: string) => {
   const { data } = await wikiApi.get(`/wikiList/${id}`);
-  return data as Wiki | null;
+  return data as WikiType | null;
 };
 
 export const useFindAllWikiQuery = () => {
-  const { data } = useQuery<Wiki[]>({
+  const { data } = useQuery<WikiType[]>({
     queryKey: ['wiki'],
     queryFn: async () => findAllWikiList(),
   });
@@ -21,7 +21,7 @@ export const useFindAllWikiQuery = () => {
 };
 
 export const useFindWikiByIdQuery = (id: string) => {
-  const { data } = useQuery<Wiki | null>({
+  const { data } = useQuery<WikiType | null>({
     queryKey: ['wiki', id],
     queryFn: async () => findWikiById(id),
   });

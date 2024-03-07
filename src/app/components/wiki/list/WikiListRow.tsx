@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-const WikiListRow = ({ data }: { data: Wiki }) => {
+const WikiListRow = ({ data }: { data: WikiType }) => {
   return (
     <Link
       href={`/detail/${data.id}`}
