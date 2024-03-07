@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import WikiList from '@/app/components/wiki/list/WikiList';
 import { useFindAllWikiQuery } from '@/app/hooks/query/wiki/useFetchWiki';
+import { useSearchParams } from 'next/navigation';
 
 interface WikiContainerProps {
   initData: WikiType[];
@@ -16,14 +17,20 @@ const cropPage = (data: WikiType[], pageNum: number) => {
 };
 
 const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
-  const [pageNum, setPageNum] = useState(initPageNum);
   const wikiList = useFindAllWikiQuery();
   const [totalSize, setTotalSize] = useState(initData.length);
+  const pageParams = useSearchParams();
+  const nowPage = +(pageParams.get('page') ?? initPageNum);
+  const [pageNum, setPageNum] = useState(nowPage);
   const showingList = cropPage(wikiList || initData, pageNum);
 
   useEffect(() => {
     setTotalSize((wikiList ?? initData).length);
   }, [wikiList]);
+
+  useEffect(() => {
+    setPageNum(nowPage);
+  }, [nowPage]);
 
   return (
     <WikiList>
@@ -35,7 +42,7 @@ const WikiListContainer = ({ initData, initPageNum }: WikiContainerProps) => {
               <WikiList.Row key={data.id} data={data} />
             ))}
           </div>
-          <WikiList.PageButtonContainer setPageNum={setPageNum} totalSize={totalSize} />
+          <WikiList.PageButtonContainer pageNum={pageNum} setPageNum={setPageNum} totalSize={totalSize} />
         </>
       ) : (
         <div>No data</div>

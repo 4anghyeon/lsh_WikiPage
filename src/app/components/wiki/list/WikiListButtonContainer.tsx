@@ -8,16 +8,16 @@ import WriteContent from '@/app/components/wiki/modal/WriteContent';
 import { useModal } from '@/app/hooks/ui/useModal';
 
 interface PageContainerProps {
+  pageNum: number;
   totalSize: number;
   setPageNum: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const VISIBLE_PAGE_LENGTH = 3;
 
-const WikiListButtonContainer = ({ totalSize, setPageNum }: PageContainerProps) => {
+const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContainerProps) => {
   const pathname = usePathname();
   const pageParams = useSearchParams();
-  const page = +(pageParams.get('page') ?? 1);
   const [pageArray, setPageArray] = useState<number[]>([]);
   const { showModal } = useModal();
 
@@ -54,7 +54,8 @@ const WikiListButtonContainer = ({ totalSize, setPageNum }: PageContainerProps) 
 
   // 화면에 보여질 페이지 번호를 계산한다.
   useEffect(() => {
-    const startPage = page - (page % VISIBLE_PAGE_LENGTH === 0 ? VISIBLE_PAGE_LENGTH : page % VISIBLE_PAGE_LENGTH);
+    const startPage =
+      pageNum - (pageNum % VISIBLE_PAGE_LENGTH === 0 ? VISIBLE_PAGE_LENGTH : pageNum % VISIBLE_PAGE_LENGTH);
 
     const temp: number[] = [];
     for (let i = 1; i <= VISIBLE_PAGE_LENGTH; i++) {
@@ -64,17 +65,21 @@ const WikiListButtonContainer = ({ totalSize, setPageNum }: PageContainerProps) 
 
     // page1,2,3 => [1, 2, 3], page4,5,6 => [4, 5, 6] ....
     setPageArray(temp);
-  }, [page, totalSize]);
+  }, [pageNum, totalSize]);
 
   return (
     <div className="flex justify-center ml-40 mr-40 relative">
-      {page > VISIBLE_PAGE_LENGTH && (
+      {pageNum > VISIBLE_PAGE_LENGTH && (
         <Button variant="outline" className="mr-2" onClick={handleClickPrev}>
           이전
         </Button>
       )}
       {pageArray.map(num => (
-        <Button key={num} variant={+(page ?? 1) === num ? 'secondary' : 'default'} onClick={() => handleClickPage(num)}>
+        <Button
+          key={num}
+          variant={+(pageNum ?? 1) === num ? 'secondary' : 'default'}
+          onClick={() => handleClickPage(num)}
+        >
           {num}
         </Button>
       ))}
