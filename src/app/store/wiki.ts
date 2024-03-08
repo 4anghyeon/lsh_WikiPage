@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { WikiType } from '@/app/types/data';
 
 interface WikiState {
   wikiList: WikiType[];

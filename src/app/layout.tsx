@@ -11,6 +11,13 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'CODINGHUB WIKI',
   description: '코딩허브 위키 페이지',
+  icons: {
+    icon: {
+      url: '/favicon.png',
+      type: 'image/png',
+    },
+    shortcut: { url: '/favicon.png', type: 'image/png' },
+  },
 };
 
 export default function RootLayout({
