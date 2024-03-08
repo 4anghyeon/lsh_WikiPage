@@ -13,12 +13,28 @@ export const useEditor = ({ contentRef }: PropsType) => {
   const wikiList = useFindAllWikiQuery();
   const atPositionRef = useRef<number>(0);
   const currentLineRef = useRef<Node | null>(null);
+  const searchWordRef = useRef<string>('');
   const [selectedTitleIndex, setSelectedTitleIndex] = useState(0);
   const [filteredTitleList, setFilteredTitleList] = useState<WikiType[]>([]);
   const [showTitleList, setShowTitleList] = useState(false);
 
   const handleClickCancel = () => {
     setModalContent(null);
+  };
+
+  const handleSelectTitle = (index: number) => {
+    const innerHTML = contentRef.current!.innerHTML ?? '';
+    const { saveRange, restoreRange } = manageRange();
+
+    saveRange();
+    const matchedWikiData = filteredTitleList[index];
+    contentRef.current!.innerHTML = innerHTML.replace(
+      `@${searchWordRef.current}`,
+      `<button id='link-${matchedWikiData.id}' class="text-blue-400 ml-0.5">${matchedWikiData.title}</button>&nbsp;`,
+    );
+    restoreRange(contentRef.current!);
+
+    setShowTitleList(false);
   };
 
   /**
@@ -78,9 +94,8 @@ export const useEditor = ({ contentRef }: PropsType) => {
    * @를 이용하여 강의 목록 검색시 이벤트
    */
   const handleKeyup = (e: React.KeyboardEvent<HTMLElement>) => {
-    const innerHTML = contentRef.current!.innerHTML ?? '';
     const textContent = currentLineRef.current?.textContent ?? '';
-    const searchWord = textContent.slice(atPositionRef.current + 1);
+    searchWordRef.current = textContent.slice(atPositionRef.current + 1);
 
     switch (e.key) {
       case 'ArrowUp':
@@ -91,17 +106,7 @@ export const useEditor = ({ contentRef }: PropsType) => {
       case 'Enter':
         if (showTitleList) {
           e.preventDefault();
-          const { saveRange, restoreRange } = manageRange();
-
-          saveRange();
-          const matchedWikiData = filteredTitleList[selectedTitleIndex];
-          contentRef.current!.innerHTML = innerHTML.replace(
-            `@${searchWord}`,
-            `<button id='link-${matchedWikiData.id}' class="text-blue-400 ml-0.5">${matchedWikiData.title}</button>&nbsp;`,
-          );
-          restoreRange(contentRef.current!);
-
-          setShowTitleList(false);
+          handleSelectTitle(selectedTitleIndex);
         }
         return;
     }
@@ -109,7 +114,7 @@ export const useEditor = ({ contentRef }: PropsType) => {
     if (showTitleList) {
       if (wikiList) {
         setFilteredTitleList(
-          wikiList.filter(wiki => wiki.title.includes(searchWord)).slice(0, MAX_SEARCH_RESULT_LENGTH),
+          wikiList.filter(wiki => wiki.title.includes(searchWordRef.current)).slice(0, MAX_SEARCH_RESULT_LENGTH),
         );
         setSelectedTitleIndex(0);
       }
@@ -121,6 +126,7 @@ export const useEditor = ({ contentRef }: PropsType) => {
     showTitleList,
     handleKeyup,
     handleKeydown,
+    handleSelectTitle,
     filteredTitleList,
     selectedTitleIndex,
   };

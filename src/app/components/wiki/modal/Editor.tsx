@@ -2,11 +2,11 @@ import React, { useRef } from 'react';
 import Input from '@/app/components/ui/Input';
 import Button from '@/app/components/ui/Button';
 import Spinner from '@/app/components/ui/Spinner';
-import { clsx } from 'clsx';
 import parse from 'html-react-parser';
 import { useEditor } from '@/app/hooks/service/useEditor';
 import EditableDiv from '@/app/components/ui/EditableDiv';
 import { EnrollArgsType, WikiType } from '@/app/types/data';
+import { cn } from '@/app/lib/utils';
 
 export const MAX_TITLE_LENGTH = 20;
 export const MAX_CONTENT_LENGTH = 300;
@@ -21,26 +21,38 @@ const Editor = ({ isPending, handleSubmit, data }: EditorProps) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const { handleClickCancel, showTitleList, handleKeydown, handleKeyup, filteredTitleList, selectedTitleIndex } =
-    useEditor({ contentRef });
+  const {
+    handleClickCancel,
+    showTitleList,
+    handleKeydown,
+    handleKeyup,
+    handleSelectTitle,
+    filteredTitleList,
+    selectedTitleIndex,
+  } = useEditor({ contentRef });
 
   return (
     <>
       <div
-        className={clsx('flex flex-col gap-5 h-full items-end relative', {
+        className={cn('flex flex-col gap-5 h-full items-end relative', {
           'opacity-50 pointer-events-none': isPending,
         })}
       >
         {/*강의 검색시 box*/}
         {showTitleList && (
-          <div className={'absolute left-0 w-full bg-white border-2 border-cyan-200 p-2 rounded-lg bottom-[90%]'}>
+          <div
+            className={cn('absolute left-0 w-full bg-white border-2 border-blue-700 p-2 rounded-lg bottom-[90%]', {
+              ['border-red-500']: filteredTitleList.length === 0,
+            })}
+          >
             {filteredTitleList.length === 0 && <p>검색 결과가 없습니다.</p>}
             {filteredTitleList.map((item, index) => (
               <div
                 key={item.id}
-                className={clsx('cursor-pointer p-2 rounded-lg hover:bg-blue-300 hover:text-white', {
+                className={cn('cursor-pointer p-2 rounded-lg hover:bg-blue-300 hover:text-white', {
                   'bg-blue-400 text-white': selectedTitleIndex === index,
                 })}
+                onClick={() => handleSelectTitle(index)}
               >
                 {item.title}
               </div>
