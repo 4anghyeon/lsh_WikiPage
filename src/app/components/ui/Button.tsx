@@ -10,6 +10,7 @@ const buttonVariants = cva('h-10 px-4 font-medium bg-white rounded-lg hover:bg-s
       primary: 'bg-blue-400 hover:bg-blue-500 text-white',
       secondary: 'bg-slate-100 hover:bg-slate-50',
       danger: 'bg-red-400 hover:bg-red-300 text-white',
+      warn: 'bg-amber-400 hover:bg-amber-300 text-white',
     },
     size: {
       default: 'h-10 px-4 py-2',
@@ -29,9 +30,9 @@ export interface ButtonProps
   asChild?: boolean;
 }
 
-const Button = ({ className, variant, ...props }: ButtonProps) => {
+const Button = ({ className, variant, size, ...props }: ButtonProps) => {
   return (
-    <button className={cn(buttonVariants({ variant, className }))} onClick={props.onClick}>
+    <button className={cn(buttonVariants({ variant, size, className }))} onClick={props.onClick}>
       {props.children}
     </button>
   );

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { WikiType } from '@/app/types/data';
 
 const WikiListRow = ({ data }: { data: WikiType }) => {
   return (

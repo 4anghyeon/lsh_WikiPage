@@ -1,41 +1,24 @@
-import { useInsertWiki } from '@/app/hooks/query/wiki/useSetWiki';
 import { setModalContent } from '@/app/store/modal';
-import { getCursorPosition, manageRange, validationText } from '@/app/lib/utils';
-import React, { RefObject, useEffect, useRef, useState } from 'react';
-import { MAX_CONTENT_LENGTH, MAX_TITLE_LENGTH } from '@/app/components/wiki/modal/WriteContent';
+import { getCursorPosition, manageRange } from '@/app/lib/utils';
+import React, { RefObject, useRef, useState } from 'react';
 import { useFindAllWikiQuery } from '@/app/hooks/query/wiki/useFetchWiki';
+import { WikiType } from '@/app/types/data';
 
 interface PropsType {
-  titleRef: RefObject<HTMLInputElement>;
   contentRef: RefObject<HTMLDivElement>;
 }
 const MAX_SEARCH_RESULT_LENGTH = 4;
 
-export const useWriteContent = ({ titleRef, contentRef }: PropsType) => {
+export const useEditor = ({ contentRef }: PropsType) => {
   const wikiList = useFindAllWikiQuery();
   const atPositionRef = useRef<number>(0);
   const currentLineRef = useRef<Node | null>(null);
   const [selectedTitleIndex, setSelectedTitleIndex] = useState(0);
   const [filteredTitleList, setFilteredTitleList] = useState<WikiType[]>([]);
   const [showTitleList, setShowTitleList] = useState(false);
-  const { addWiki, isAddSuccess, isAddPending } = useInsertWiki();
 
   const handleClickCancel = () => {
     setModalContent(null);
-  };
-
-  const handleClickEnroll = () => {
-    if (isAddPending) return;
-    if (!validationText({ name: '강의명', text: titleRef.current!.value, maxLength: MAX_TITLE_LENGTH })) return;
-    if (
-      !validationText({ name: '강의 설명', text: contentRef.current!.textContent ?? '', maxLength: MAX_CONTENT_LENGTH })
-    )
-      return;
-
-    addWiki({
-      title: titleRef.current!.value,
-      content: contentRef.current!.innerHTML ?? '',
-    });
   };
 
   /**
@@ -133,17 +116,8 @@ export const useWriteContent = ({ titleRef, contentRef }: PropsType) => {
     }
   };
 
-  useEffect(() => {
-    if (isAddSuccess) {
-      setModalContent(null);
-      alert('등록 되었습니다!');
-    }
-  }, [isAddSuccess]);
-
   return {
     handleClickCancel,
-    handleClickEnroll,
-    isAddPending,
     showTitleList,
     handleKeyup,
     handleKeydown,

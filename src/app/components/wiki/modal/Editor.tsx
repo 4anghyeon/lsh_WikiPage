@@ -3,32 +3,30 @@ import Input from '@/app/components/ui/Input';
 import Button from '@/app/components/ui/Button';
 import Spinner from '@/app/components/ui/Spinner';
 import { clsx } from 'clsx';
-import { useWriteContent } from '@/app/hooks/service/useWriteContent';
+import { useEditor } from '@/app/hooks/service/useEditor';
 import EditableDiv from '@/app/components/ui/EditableDiv';
+import { EnrollArgsType } from '@/app/types/data';
 
 export const MAX_TITLE_LENGTH = 20;
 export const MAX_CONTENT_LENGTH = 300;
 
-const WriteContent = () => {
+interface EditorProps {
+  isPending: boolean;
+  handleSubmit: ({ titleRef, contentRef }: EnrollArgsType) => void;
+}
+
+const Editor = ({ isPending, handleSubmit }: EditorProps) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const {
-    handleClickEnroll,
-    handleClickCancel,
-    isAddPending,
-    showTitleList,
-    handleKeydown,
-    handleKeyup,
-    filteredTitleList,
-    selectedTitleIndex,
-  } = useWriteContent({ titleRef, contentRef });
+  const { handleClickCancel, showTitleList, handleKeydown, handleKeyup, filteredTitleList, selectedTitleIndex } =
+    useEditor({ contentRef });
 
   return (
     <>
       <div
         className={clsx('flex flex-col gap-5 h-full items-end relative', {
-          'opacity-50 pointer-events-none': isAddPending,
+          'opacity-50 pointer-events-none': isPending,
         })}
       >
         {/*강의 검색시 box*/}
@@ -48,16 +46,12 @@ const WriteContent = () => {
           </div>
         )}
 
-        <Input
-          placeholder={`강의명을 입력하세요 (${MAX_TITLE_LENGTH}자 이내)`}
-          ref={titleRef}
-          disabled={isAddPending}
-        />
+        <Input placeholder={`강의명을 입력하세요 (${MAX_TITLE_LENGTH}자 이내)`} ref={titleRef} disabled={isPending} />
         <EditableDiv
           placeholder={`강의 설명을 입력하세요 (${MAX_CONTENT_LENGTH}자 이내)`}
           className="h-full"
           ref={contentRef}
-          disabled={isAddPending}
+          disabled={isPending}
           onKeyDown={handleKeydown}
           onKeyUp={handleKeyup}
         />
@@ -67,13 +61,13 @@ const WriteContent = () => {
             <Button variant="danger" onClick={handleClickCancel}>
               취소
             </Button>
-            <Button variant="primary" onClick={handleClickEnroll} disabled={isAddPending}>
+            <Button variant="primary" onClick={() => handleSubmit({ titleRef, contentRef })} disabled={isPending}>
               등록
             </Button>
           </div>
         </div>
       </div>
-      {isAddPending && (
+      {isPending && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           <Spinner />
         </div>
@@ -82,4 +76,4 @@ const WriteContent = () => {
   );
 };
 
-export default WriteContent;
+export default Editor;

@@ -4,8 +4,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@/app/components/ui/Button';
 import { ITEM_PER_PAGE } from '@/app/components/wiki/list/WikiListContainer';
 import { usePathname, useSearchParams } from 'next/navigation';
-import WriteContent from '@/app/components/wiki/modal/WriteContent';
+import Editor from '@/app/components/wiki/modal/Editor';
 import { useModal } from '@/app/hooks/ui/useModal';
+import WriteEditor from '@/app/components/wiki/modal/WriteEditor';
 
 interface PageContainerProps {
   pageNum: number;
@@ -49,7 +50,7 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
   }, []);
 
   const handleClickEnroll = () => {
-    showModal(<WriteContent />);
+    showModal(<WriteEditor />);
   };
 
   // 화면에 보여질 페이지 번호를 계산한다.

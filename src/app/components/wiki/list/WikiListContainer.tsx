@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import WikiList from '@/app/components/wiki/list/WikiList';
 import { useFindAllWikiQuery } from '@/app/hooks/query/wiki/useFetchWiki';
 import { useSearchParams } from 'next/navigation';
+import { WikiType } from '@/app/types/data';
 
 interface WikiContainerProps {
   initData: WikiType[];
