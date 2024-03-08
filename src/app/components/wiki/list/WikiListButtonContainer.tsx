@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Button from '@/app/components/ui/Button';
 import { ITEM_PER_PAGE } from '@/app/components/wiki/list/WikiListContainer';
 import { usePathname, useSearchParams } from 'next/navigation';
-import Editor from '@/app/components/wiki/modal/Editor';
 import { useModal } from '@/app/hooks/ui/useModal';
 import WriteEditor from '@/app/components/wiki/modal/WriteEditor';
 
@@ -16,10 +15,23 @@ interface PageContainerProps {
 
 const VISIBLE_PAGE_LENGTH = 3;
 
+const makePageArray = (pageNum: number, totalSize: number) => {
+  const startPage =
+    pageNum - (pageNum % VISIBLE_PAGE_LENGTH === 0 ? VISIBLE_PAGE_LENGTH : pageNum % VISIBLE_PAGE_LENGTH);
+
+  const temp: number[] = [];
+  for (let i = 1; i <= VISIBLE_PAGE_LENGTH; i++) {
+    temp.push(startPage + i);
+    if ((startPage + i) * ITEM_PER_PAGE >= totalSize) break;
+  }
+
+  return temp;
+};
+
 const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContainerProps) => {
   const pathname = usePathname();
   const pageParams = useSearchParams();
-  const [pageArray, setPageArray] = useState<number[]>([]);
+  const [pageArray, setPageArray] = useState<number[]>(makePageArray(pageNum, totalSize));
   const { showModal } = useModal();
 
   const createQueryString = useCallback(
@@ -55,17 +67,8 @@ const WikiListButtonContainer = ({ pageNum, totalSize, setPageNum }: PageContain
 
   // 화면에 보여질 페이지 번호를 계산한다.
   useEffect(() => {
-    const startPage =
-      pageNum - (pageNum % VISIBLE_PAGE_LENGTH === 0 ? VISIBLE_PAGE_LENGTH : pageNum % VISIBLE_PAGE_LENGTH);
-
-    const temp: number[] = [];
-    for (let i = 1; i <= VISIBLE_PAGE_LENGTH; i++) {
-      temp.push(startPage + i);
-      if ((startPage + i) * ITEM_PER_PAGE >= totalSize) break;
-    }
-
     // page1,2,3 => [1, 2, 3], page4,5,6 => [4, 5, 6] ....
-    setPageArray(temp);
+    setPageArray(makePageArray(pageNum, totalSize));
   }, [pageNum, totalSize]);
 
   return (
