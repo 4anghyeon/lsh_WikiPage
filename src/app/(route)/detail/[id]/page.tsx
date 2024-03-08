@@ -11,7 +11,7 @@ interface PageProps {
 const Page = async (props: Readonly<PageProps>) => {
   const data = await findWikiById(props.params.id);
 
-  return <WikiDetailContainer data={data} />;
+  return <WikiDetailContainer initialData={data} id={props.params.id} />;
 };
 
 export default Page;

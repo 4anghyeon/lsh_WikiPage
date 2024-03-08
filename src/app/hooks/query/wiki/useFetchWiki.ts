@@ -1,5 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { wikiApi } from '@/app/shared/axios';
+import { WikiType } from '@/app/types/data';
+
+export const WIKI_KEY = 'wiki';
 
 export const findAllWikiList = async () => {
   const { data } = await wikiApi.get(`/wikiList`);
@@ -13,7 +16,7 @@ export const findWikiById = async (id: string) => {
 
 export const useFindAllWikiQuery = () => {
   const { data } = useQuery<WikiType[]>({
-    queryKey: ['wiki'],
+    queryKey: [WIKI_KEY],
     queryFn: async () => findAllWikiList(),
   });
 
@@ -21,10 +24,10 @@ export const useFindAllWikiQuery = () => {
 };
 
 export const useFindWikiByIdQuery = (id: string) => {
-  const { data } = useQuery<WikiType | null>({
-    queryKey: ['wiki', id],
+  const { data: wikiData } = useQuery<WikiType | null>({
+    queryKey: [WIKI_KEY, id],
     queryFn: async () => findWikiById(id),
   });
 
-  return data;
+  return wikiData;
 };

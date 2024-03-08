@@ -14,7 +14,7 @@ export const MAX_CONTENT_LENGTH = 300;
 interface EditorProps {
   isPending: boolean;
   handleSubmit: ({ titleRef, contentRef }: EnrollArgsType) => void;
-  data: WikiType;
+  data?: WikiType;
 }
 
 const Editor = ({ isPending, handleSubmit, data }: EditorProps) => {

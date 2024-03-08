@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { wikiApi } from '@/app/shared/axios';
 import { WikiType } from '@/app/types/data';
+import { WIKI_KEY } from '@/app/hooks/query/wiki/useFetchWiki';
 
 const insertWiki = async (data: Omit<WikiType, 'id'>) => {
   await wikiApi.post(`/wikiList/`, data);
@@ -8,6 +9,7 @@ const insertWiki = async (data: Omit<WikiType, 'id'>) => {
 
 const updateWiki = async (data: WikiType) => {
   await wikiApi.put(`/wikiList/${data.id}`, data);
+  return data;
 };
 
 export const useInsertWiki = () => {
@@ -20,7 +22,7 @@ export const useInsertWiki = () => {
   } = useMutation({
     mutationFn: insertWiki,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wiki'] });
+      queryClient.invalidateQueries({ queryKey: [WIKI_KEY] });
     },
   });
 
@@ -36,8 +38,8 @@ export const useUpdateWiki = () => {
     isSuccess: isEditSuccess,
   } = useMutation({
     mutationFn: updateWiki,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wiki'] });
+    onSuccess: res => {
+      queryClient.invalidateQueries({ queryKey: [WIKI_KEY, res.id.toString()] });
     },
   });
 

@@ -6,11 +6,11 @@ import { useModal } from '@/app/hooks/ui/useModal';
 import UpdateEditor from '@/app/components/wiki/modal/UpdateEditor';
 import { WikiType } from '@/app/types/data';
 
-const WikiDetailTabHeader = ({ data }: { data: WikiType }) => {
+const WikiDetailTabHeader = ({ data }: { data: WikiType | null }) => {
   const { showModal } = useModal();
 
   const handleClickEdit = () => {
-    showModal(<UpdateEditor data={data} />);
+    if (data) showModal(<UpdateEditor data={data} />);
   };
 
   return (

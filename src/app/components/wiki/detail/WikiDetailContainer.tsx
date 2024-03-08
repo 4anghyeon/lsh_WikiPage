@@ -1,13 +1,23 @@
+'use client';
+
 import React from 'react';
 import WikiDetail from '@/app/components/wiki/detail/WikiDetail';
 import { WikiType } from '@/app/types/data';
+import { useFindWikiByIdQuery } from '@/app/hooks/query/wiki/useFetchWiki';
 
-const WikiDetailContainer = ({ data }: { data: WikiType }) => {
+interface PropsType {
+  initialData: WikiType | null;
+  id: string;
+}
+
+const WikiDetailContainer = ({ initialData, id }: PropsType) => {
+  const wikiData = useFindWikiByIdQuery(id);
+
   return (
     <WikiDetail>
-      <WikiDetail.Header title={data?.title ?? ''} />
-      <WikiDetail.TabHeader data={data} />
-      <WikiDetail.Description description={data?.content ?? ''} />
+      <WikiDetail.Header title={wikiData ? wikiData.title : initialData?.title ?? ''} />
+      <WikiDetail.TabHeader data={wikiData || initialData} />
+      <WikiDetail.Description description={wikiData ? wikiData.content : initialData?.content ?? ''} />
     </WikiDetail>
   );
 };
