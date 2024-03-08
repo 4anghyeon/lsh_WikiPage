@@ -9,6 +9,10 @@ interface PropsType {
 }
 const MAX_SEARCH_RESULT_LENGTH = 4;
 
+/**
+ * wiki 등록/수정시 필요한 editableDiv를 조작하는 비지니스 로직이 담긴 hook
+ * @param contentRef
+ */
 export const useEditor = ({ contentRef }: PropsType) => {
   const wikiList = useFindAllWikiQuery();
   const atPositionRef = useRef<number>(0);
@@ -22,6 +26,10 @@ export const useEditor = ({ contentRef }: PropsType) => {
     setModalContent(null);
   };
 
+  /**
+   * 엔터, 클릭시 선택된 wiki를 에디터에 링크로 적용한다.
+   * @param index 검색된 wiki의 index
+   */
   const handleSelectTitle = (index: number) => {
     const innerHTML = contentRef.current!.innerHTML ?? '';
     const { saveRange, restoreRange } = manageRange();
@@ -91,7 +99,7 @@ export const useEditor = ({ contentRef }: PropsType) => {
   };
 
   /**
-   * @를 이용하여 강의 목록 검색시 이벤트
+   * @를 이용하여 wiki 목록 검색시 키 이벤트
    */
   const handleKeyup = (e: React.KeyboardEvent<HTMLElement>) => {
     const textContent = currentLineRef.current?.textContent ?? '';

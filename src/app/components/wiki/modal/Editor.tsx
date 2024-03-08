@@ -17,6 +17,14 @@ interface EditorProps {
   data?: WikiType;
 }
 
+/**
+ * 등록 / 수정에서 공통적으로 사용되는 에디터 컴포넌트
+ * 등록과 수정의 동작이 조금씩 다르기 때문에 직접 사용되지 않고 외부에서 값을 주입받아 사용된다.
+ * @param isPending 등록/수정 비동기 진행 여부
+ * @param handleSubmit 등록/수정시 일어날 이벤트
+ * @param data wiki 데이터 (등록 Editor일 경우 null)
+ * @constructor
+ */
 const Editor = ({ isPending, handleSubmit, data }: EditorProps) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -38,7 +46,7 @@ const Editor = ({ isPending, handleSubmit, data }: EditorProps) => {
           'opacity-50 pointer-events-none': isPending,
         })}
       >
-        {/*강의 검색시 box*/}
+        {/* Wiki 검색시 목록 출력 box*/}
         {showTitleList && (
           <div
             className={cn('absolute left-0 w-full bg-white border-2 border-blue-700 p-2 rounded-lg bottom-[90%]', {
@@ -60,12 +68,15 @@ const Editor = ({ isPending, handleSubmit, data }: EditorProps) => {
           </div>
         )}
 
+        {/* 제목 입력 */}
         <Input
           placeholder={`강의명을 입력하세요 (${MAX_TITLE_LENGTH}자 이내)`}
           ref={titleRef}
           disabled={isPending}
           defaultValue={data ? data.title : ''}
         />
+
+        {/* 내용 입력 */}
         <EditableDiv
           placeholder={`강의 설명을 입력하세요 (${MAX_CONTENT_LENGTH}자 이내)`}
           className="h-full"
@@ -77,6 +88,8 @@ const Editor = ({ isPending, handleSubmit, data }: EditorProps) => {
         >
           {data ? parse(data.content) : ''}
         </EditableDiv>
+
+        {/* 하단 버튼 영역*/}
         <div className="flex justify-between items-center w-full">
           <p className="text-stone-700 text-md italic">@을 이용하여 강의명을 검색해보세요.</p>
           <div className="flex gap-3">

@@ -5,6 +5,9 @@ import { useEffect } from 'react';
 import { setModalContent } from '@/app/store/modal';
 import { EnrollArgsType } from '@/app/types/data';
 
+/**
+ * wiki 수정시 필요한 비지니스 로직을 담은 hook
+ */
 export const useEditWiki = () => {
   const { editWiki, isEditSuccess, isEditPending } = useUpdateWiki();
 

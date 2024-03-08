@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { TextValidationType } from '@/app/types/data';
 
 interface CursorPositionType {
   position: number;
@@ -10,6 +11,12 @@ export const cn = (...inputs: ClassValue[]) => {
   return twMerge(clsx(inputs));
 };
 
+/**
+ * Wiki 등록/수정시의 입력 값을 검증한다
+ * @param name 항목이름
+ * @param text 검증할 텍스트
+ * @param maxLength 최대 길이
+ */
 export const validationText = ({ name, text, maxLength }: TextValidationType) => {
   const value = text.trim();
   if (value.length === 0) {
@@ -49,6 +56,9 @@ export const getCursorPosition = (elem: HTMLElement): CursorPositionType => {
   return { position: 0, currentLine: null };
 };
 
+/**
+ * 태그 검색 후 적용 시 원래의 커서 위치로 돌리기 위해 Range를 관리한다
+ */
 export const manageRange = () => {
   let savedRange: Range | undefined = undefined;
 
