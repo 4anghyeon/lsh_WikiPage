@@ -13,6 +13,7 @@ interface TextValidationType {
 }
 
 interface EnrollArgsType {
+  id?: string;
   titleRef: RefObject<HTMLInputElement>;
   contentRef: RefObject<HTMLDivElement>;
 }
